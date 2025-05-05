@@ -55,8 +55,16 @@
                 width: 30%;
                 height: 4px;
                 background-color: #D9D9D9;
+                margin: auto;
             }
         </style>
+        @php
+            if (isset($subtitle) || isset($subtitle_primary) || Request::is('/')) {
+                $notitle = false;
+            } else {
+                $notitle = true;
+            }
+        @endphp
         @if (isset($subtitle))
             <section class="jarallax py-4 mb-4 hero-agency" data-jarallax="" data-speed="0.4" style="min-height: 40vh;">
                 <img class="jarallax-img" src="{{ asset('img/effective-meeting-blog 2.png') }}" alt="agency"
@@ -72,14 +80,22 @@
                                         </h1>
 
                                         @if (isset($subtitle_deskripsi))
-                                            <div class="line mb-3"></div>
-                                            <p>{{ $subtitle_deskripsi }}</p>
+                                            <div class="line mb-3  "></div>
+                                            <p class="text-center ">{{ $subtitle_deskripsi }}</p>
                                         @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </section>
+        @endif
+        @if ($notitle)
+            <section class="jarallax py-4 mb-4 hero-agency" data-jarallax="" data-speed="0.4" style="min-height:10vh;">
+
+                <div class="position-absolute start-0 end-0">
+
                 </div>
             </section>
         @endif
