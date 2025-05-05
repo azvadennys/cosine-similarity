@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon icon-->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/iconwafi.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/iconwafi.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/iconwafi.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/logo.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/logo.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/logo.png') }}">
     <meta name="msapplication-TileColor" content="#FB4700">
     <meta name="msapplication-config" content="./assets/images/favicon/tile.xml">
 
@@ -38,7 +38,7 @@
 
 
 
-    <title>Wafi Jaya Group</title>
+    <title>E-Learning</title>
 </head>
 
 <body>
@@ -137,16 +137,14 @@
                             <!-- Gambar pertama di baris pertama -->
                             <div class="col-12 d-flex justify-content-start mb-3">
                                 <a class="navbar-brand" href="/">
-                                    <img style="max-height: 60px" src="{{ asset('img/iconwafi.png') }}" alt="">
+                                    <img style="max-height: 60px" src="{{ asset('img/logo.png') }}" alt="">
                                 </a>
 
                             </div>
                         </div>
 
                         <div class="row">
-                            <h3>CV WAFI JAYA GROUP</h3>
-                            <P>Jl. WR.Supratman, No. 42, Kelurahan Pematang Gubernur, Kecamatan Muara Bangkahulu</P>
-                            <p class="">Email: xxxxx@gmail.com<br>Contact Person: 08117320920</p>
+                            <h3>E-Learning</h3>
                         </div>
                     </div>
                 </div>
@@ -175,7 +173,7 @@
                 </div>
                 <div class="col-md-9 col-lg-6">
                     <div class="small mb-3 mb-lg-0 text-lg-center">
-                        Copyright © 2025 Wafi Jaya Group
+                        Copyright © 2025 E-Learning
                     </div>
                 </div>
                 <div class="col-lg-3">

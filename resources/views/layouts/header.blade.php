@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg transparent navbar-transparent navbar-light navbar-clone fixed navbar-stick">
         <div class="container px-3">
             <a class="navbar-brand d-flex align-items-center" href="/">
-                <img src="{{ asset('assets/img/iconwafi.png') }}" alt="" style="max-height: 30px;">
+                <img src="{{ asset('img/logo.png') }}" alt="" style="max-height: 30px;">
                 <span class="ms-2">E-Learning</span>
             </a>
             <button class="navbar-toggler offcanvas-nav-btn" type="button" data-bs-toggle="offcanvas"
@@ -13,7 +13,7 @@
                 aria-labelledby="offcanvasLabel">
                 <div class="offcanvas-header">
                     <a href="./index.html" class="text-inverse"><img style="max-height: 30px"
-                            src="{{ asset('assets/img/iconwafi.png') }}" alt=""></a>
+                            src="{{ asset('img/logo.png') }}" alt=""></a>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body pt-0 align-items-center">
