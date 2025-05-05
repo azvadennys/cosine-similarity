@@ -29,7 +29,7 @@
 
                         @guest
                             <li class="nav-item"><a class="btn btn-primary mx-2" style="padding: 8px 25px"
-                                    href="{{ url('admin') }}">Login</a></li>
+                                    href="{{route('login') }}">Login</a></li>
                         @endguest
                         @auth
                             <li><a class="btn btn-primary mx-auto" style="padding: 8px 25px" href="#"
