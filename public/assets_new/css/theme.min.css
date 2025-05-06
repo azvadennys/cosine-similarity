@@ -22276,3 +22276,15 @@ a.plyr__control:before {
     --bs-table-bg: var(--bs-light);
     --bs-table-border-color: currentcolor;
 }
+
+/* Custom style for table header */
+.custom-thead {
+    background-color: var(--bs-primary); /* Bootstrap primary color */
+    color: white; /* White text color */
+    text-align: center; /* Center align the text in the header */
+}
+
+/* Ensuring bold text in th elements */
+.custom-thead th {
+    font-weight: bold;
+}

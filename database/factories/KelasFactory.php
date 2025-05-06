@@ -30,11 +30,18 @@ class KelasFactory extends Factory
             ]);
         }
 
+        $kode_bergabung = strtoupper(Str::random(4));
+
+        // Ensure that the generated code is unique
+        while (Kelas::where('kode_bergabung', $kode_bergabung)->exists()) {
+            $kode_bergabung = strtoupper(Str::random(4));
+        }
+
         return [
             'nama_kelas' => $this->faker->unique()->sentence(3),
             'deskripsi' => $this->faker->paragraph,
             'dosen_id' => $dosen->id,  // Assign dosen's id
-            'kode_bergabung' => strtoupper("AAAA") // You may want to replace this with dynamic code
+            'kode_bergabung' =>  $kode_bergabung // You may want to replace this with dynamic code
         ];
     }
 }

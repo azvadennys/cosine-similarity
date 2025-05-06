@@ -22,8 +22,8 @@
                         <li class="nav-item"><a class="nav-link {{ Request::is('/') ? 'active' : '' }}"
                                 href="{{ url('/') }}">Beranda</a></li>
                         @auth
-                            {{-- <li class="nav-item"><a class="nav-link {{ Request::is('riwayat*') ? 'active' : '' }}"
-                                    href="{{ route('lowongan.riwayat', auth()->user()->id) }}">Riwayat Lamaran</a></li> --}}
+                            <li class="nav-item"><a class="nav-link {{ Request::is('kelas*') ? 'active' : '' }}"
+                                    href="{{ route('kelas.index') }}">Kelas</a></li>
                         @endauth
 
 

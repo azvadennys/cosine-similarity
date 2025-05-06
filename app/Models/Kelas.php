@@ -22,4 +22,9 @@ class Kelas extends Model
             ->withPivot('status')
             ->withTimestamps();
     }
+
+    public function mahasiswas()
+    {
+        return $this->belongsToMany(User::class, 'kelas_mahasiswa', 'kelas_id', 'mahasiswa_id');
+    }
 }
