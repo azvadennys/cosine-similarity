@@ -11,4 +11,14 @@ class JawabanTugas extends Model
 
     protected $table = "jawaban_tugas";
     protected $fillable = ['user_id', 'tugas_id', 'soal_tugas_id', 'jawaban', 'is_benar'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function soal()
+    {
+        return $this->belongsTo(SoalTugas::class);
+    }
 }

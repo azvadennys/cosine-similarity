@@ -49,12 +49,35 @@ class TugasController extends Controller
                     'tugas_id' => $tugas->id,
                     'tipe' => $item['tipe'],
                     'pertanyaan' => $item['pertanyaan'],
-                    'jawaban_benar' => $item['jawaban_benar'] ?? null,
-                    'alasan_jawaban' => $item['jawaban_benar'] ?? null,
+                    'jawaban_benar' => $item['jawaban_benar_essay'] ?? null,
+                    'alasan_jawaban' => $item['jawaban_benar_essay'] ?? null,
                 ]);
             }
         }
 
         return redirect()->route('kelas.show', $request->kelas_id)->with('success', 'Tugas dan soal berhasil dibuat');
+    }
+
+    public function show($tugasId)
+    {
+        $tugas = Tugas::with(['soal', 'jawaban' => function ($query) {
+            $query->with('user');
+        }])->findOrFail($tugasId);
+
+        // Mendapatkan daftar pengguna yang telah mengerjakan tugas ini
+        $penggunaYangMengerjakan = $tugas->jawaban->pluck('user.name');
+
+        return view('tugas.show', compact('tugas', 'penggunaYangMengerjakan'));
+    }
+
+    public function destroy($tugasId)
+    {
+        $tugas = Tugas::findOrFail($tugasId);
+        $judulTugas = $tugas->judul;
+
+        // Hapus tugas
+        $tugas->delete();
+
+        return back()->with('success', 'Berhasil Menghapus Tugas ' . $judulTugas);
     }
 }

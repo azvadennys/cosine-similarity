@@ -54,6 +54,7 @@
                                     <th>No</th>
                                     <th>Judul</th>
                                     <th>Deadline</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,6 +63,17 @@
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $tugas->judul }}</td>
                                         <td>{{ \Carbon\Carbon::parse($tugas->batas_waktu)->format('d M Y H:i') }}</td>
+
+                                        <td><a href="{{ route('tugas.show', $tugas->id) }}"
+                                                class="btn btn-sm btn-primary">Lihat</a>
+                                            <form action="{{ route('tugas.destroy', $tugas->id) }}" method="POST"
+                                                id="deleteForm{{ $tugas->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-sm btn-danger"
+                                                    onclick="confirmDelete({{ $tugas->id }})">Hapus Tugas</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @empty
                                 @endforelse
@@ -85,5 +97,22 @@
             $('#tablemahasiswa').DataTable();
             $('#tabletugas').DataTable();
         });
+
+        function confirmDelete(tugasId) {
+            Swal.fire({
+                title: 'Yakin ingin menghapus tugas ini?',
+                text: 'Tugas yang dihapus tidak bisa dikembalikan!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika konfirmasi hapus berhasil, kirim form
+                    document.getElementById('deleteForm' + tugasId).submit();
+                }
+            });
+        }
     </script>
 @endsection

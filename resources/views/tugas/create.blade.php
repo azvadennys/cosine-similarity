@@ -102,7 +102,7 @@
                 <div class="opsi-essay" id="opsi-essay-${soalIndex}" style="display:none;">
                     <div class="mb-2">
                         <label class="form-label">Jawaban Soal</label>
-                        <textarea name="soal[${soalIndex}][jawaban_benar]" class="form-control"></textarea>
+                        <textarea name="soal[${soalIndex}][jawaban_benar_essay]" class="form-control"></textarea>
                     </div>
                 </div>
 

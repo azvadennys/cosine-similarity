@@ -2,88 +2,45 @@
 
 @section('content')
     <div class="container">
-        <h1 class="mt-4">Kelas {{ $kelas->nama_kelas }}</h1>
-        <h3 class="mb-2">Dosen: {{ $kelas->dosen->name }}</h3>
-        <p class="mb-4">{{ $kelas->deskripsi }}</p>
+        <h2 class="mt-4">Tugas: {{ $tugas->judul }}</h2>
+        <p class="mb-2">{{ $tugas->deskripsi }}</p>
+        <p class="mb-4">Batas Waktu: {{ \Carbon\Carbon::parse($tugas->batas_waktu)->format('d M Y H:i') }}</p>
 
-        <div class="row">
-            <!-- Card Mahasiswa -->
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0 text-white">Mahasiswa yang Bergabung</h5>
-                    </div>
-                    <div class="card-body p-2">
-                        <table class="table table-bordered table-striped mb-0" id="tablemahasiswa">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama</th>
-                                    <th>Email</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($kelas->mahasiswas as $index => $mhs)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $mhs->name }}</td>
-                                        <td>{{ $mhs->email }}</td>
-                                    </tr>
-                                @empty
-                                @endforelse
-                            </tbody>
-                        </table>
+        <h4 class="mb-4">Daftar Soal</h4>
+        <div class="list-group">
+            @foreach ($tugas->soal as $soal)
+                <div class="list-group-item list-group-item-action mb-3">
+                    <strong>{{ $loop->iteration }}. {{ $soal->pertanyaan }}</strong>
+
+                    <div class="mt-2">
+                        @if ($soal->tipe == 'pg')
+                            <div><strong>Pilihan:</strong></div>
+                            <ul class="list-unstyled">
+                                <li>A. {{ $soal->pilihan_a }}</li>
+                                <li>B. {{ $soal->pilihan_b }}</li>
+                                <li>C. {{ $soal->pilihan_c }}</li>
+                                <li>D. {{ $soal->pilihan_d }}</li>
+                            </ul>
+                            <div><strong>Jawaban Benar:</strong> {{ $soal->jawaban_benar }}</div>
+                            <div><strong>Penjelasan:</strong> {{ $soal->alasan_jawaban }}</div>
+                        @else
+                            <div><strong>Jenis:</strong> Esai</div>
+                            <div><strong>Jawaban Benar:</strong> {{ $soal->jawaban_benar }}</div>
+                        @endif
                     </div>
                 </div>
-            </div>
-
-            <!-- Card Tugas -->
-            <div class="col-md-6 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0 text-white">Daftar Tugas</h5>
-                        <a href="{{ route('tugas.create', $kelas->id) }}" class="btn btn-light btn-sm text-success">
-                            Buat Tugas
-                        </a>
-                    </div>
-
-                    <div class="card-body p-2">
-                        <table class="table table-bordered table-striped mb-0" id="tabletugas">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>No</th>
-                                    <th>Judul</th>
-                                    <th>Deadline</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($kelas->tugas as $index => $tugas)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $tugas->judul }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($tugas->batas_waktu)->format('d M Y H:i') }}</td>
-                                    </tr>
-                                @empty
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
 
+        <hr>
+
+        <h4>Daftar Pengguna yang Sudah Mengerjakan</h4>
+        <ul>
+            @forelse ($penggunaYangMengerjakan as $pengguna)
+                <li>{{ $pengguna }}</li>
+            @empty
+                <p>Belum ada pengguna yang mengerjakan tugas ini.</p>
+            @endforelse
+        </ul>
     </div>
-@endsection
-
-@section('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css" />
-
-    <script src="https://cdn.datatables.net/2.3.0/js/dataTables.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#tablemahasiswa').DataTable();
-            $('#tabletugas').DataTable();
-        });
-    </script>
 @endsection

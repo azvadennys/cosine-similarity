@@ -28,4 +28,6 @@ Route::middleware(['auth'])->group(function () {
     //Route for Tugas
     Route::get('/tugas/create/{id}', [TugasController::class, 'create'])->name('tugas.create');
     Route::post('/tugas/store', [TugasController::class, 'store'])->name('tugas.store');
+    Route::get('/tugas/{id}', [TugasController::class, 'show'])->name('tugas.show');
+    Route::delete('/tugas/{id}', [TugasController::class, 'destroy'])->name('tugas.destroy');
 });
