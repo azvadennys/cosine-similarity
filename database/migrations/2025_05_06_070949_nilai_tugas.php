@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Migration untuk tabel jawaban_mahasiswa
-        Schema::create('jawaban_tugas', function (Blueprint $table) {
+        Schema::create('nilai_tugas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('tugas_id')->constrained('tugas')->onDelete('cascade');
-            $table->foreignId('soal_tugas_id')->constrained('soal_tugas')->onDelete('cascade');
 
-            $table->text('jawaban'); // isi jawaban user
-            $table->boolean('is_benar')->nullable(); // khusus untuk PG bisa ditentukan otomatis
+            $table->float('nilai')->nullable(); // nilai akhir dari tugas
+            $table->text('catatan')->nullable(); // komentar dosen jika ada
 
             $table->timestamps();
         });
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jawaban_tugas');
+        Schema::dropIfExists('nilai_tugas');
     }
 };

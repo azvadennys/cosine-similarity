@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\TugasController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,4 +24,8 @@ Route::middleware(['auth'])->group(function () {
     // Additional routes for Mahasiswa (Students)
     Route::post('/kelas/join', [KelasController::class, 'joinClass'])->name('kelas.join');
     Route::post('/kelas/leave/{kelas}', [KelasController::class, 'leaveClass'])->name('kelas.leave');
+
+    //Route for Tugas
+    Route::get('/tugas/create/{id}', [TugasController::class, 'create'])->name('tugas.create');
+    Route::post('/tugas/store', [TugasController::class, 'store'])->name('tugas.store');
 });

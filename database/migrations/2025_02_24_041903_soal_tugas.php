@@ -15,13 +15,17 @@ return new class extends Migration
         Schema::create('soal_tugas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tugas_id')->constrained('tugas')->onDelete('cascade');
+            $table->enum('tipe', ['pg', 'essay']); // pg = pilihan ganda, essay = isian
             $table->text('pertanyaan');
-            $table->string('pilihan_a');
-            $table->string('pilihan_b');
-            $table->string('pilihan_c');
-            $table->string('pilihan_d');
-            $table->string('jawaban_benar');
-            $table->text('alasan')->nullable(); // Alasan memilih jawaban
+
+            // Untuk PG
+            $table->string('pilihan_a')->nullable();
+            $table->string('pilihan_b')->nullable();
+            $table->string('pilihan_c')->nullable();
+            $table->string('pilihan_d')->nullable();
+            $table->string('jawaban_benar')->nullable(); // A/B/C/D atau string langsung
+            $table->string('alasan_jawaban')->nullable(); // Untuk Cosine Similarity
+
             $table->timestamps();
         });
     }

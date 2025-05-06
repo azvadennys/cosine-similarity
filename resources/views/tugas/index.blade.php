@@ -1,7 +1,9 @@
 @extends('index')
 @section('content')
     <div class="container">
-        <h1 class="my-4">Kelas</h1>
+        <h1 class="mt-4">Kelas {{ $kelas->nama_kelas }}</h1>
+        <h3 class="mb-2">Dosen: {{ $kelas->dosen->name }}</h3>
+        <p class="mb-4">{{ $kelas->deskripsi }}</p>
 
         <div class="row mb-3 justify-content-between">
             <!-- Left Side (Buttons) -->
