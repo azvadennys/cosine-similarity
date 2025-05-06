@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('pilihan_b')->nullable();
             $table->string('pilihan_c')->nullable();
             $table->string('pilihan_d')->nullable();
-            $table->string('jawaban_benar')->nullable(); // A/B/C/D atau string langsung
-            $table->string('alasan_jawaban')->nullable(); // Untuk Cosine Similarity
+            $table->text('jawaban_benar')->nullable(); // A/B/C/D atau string langsung
+            $table->text('alasan_jawaban')->nullable(); // Untuk Cosine Similarity
 
             $table->timestamps();
         });

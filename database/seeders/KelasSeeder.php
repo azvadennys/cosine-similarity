@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Kelas;
 use App\Models\KelasMahasiswa;
+use App\Models\SoalTugas;
 
 class KelasSeeder extends Seeder
 {
