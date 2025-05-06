@@ -18,4 +18,8 @@ class Tugas extends Model
     {
         return $this->hasMany(SoalTugas::class);
     }
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
+    }
 }

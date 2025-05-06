@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        <a href="{{route('kelas.show',$tugas->kelas->id)}}" class="btn btn-primary btn-sm"><i class="bi bi-arrow-left"></i> Kembali</a>
         <h2 class="mt-4">Tugas: {{ $tugas->judul }}</h2>
         <p class="mb-2">{{ $tugas->deskripsi }}</p>
         <p class="mb-4">Batas Waktu: {{ \Carbon\Carbon::parse($tugas->batas_waktu)->format('d M Y H:i') }}</p>
