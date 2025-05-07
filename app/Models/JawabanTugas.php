@@ -10,7 +10,7 @@ class JawabanTugas extends Model
     use HasFactory;
 
     protected $table = "jawaban_tugas";
-    protected $fillable = ['user_id', 'tugas_id', 'soal_tugas_id', 'jawaban', 'is_benar'];
+    protected $fillable = ['user_id', 'tugas_id', 'soal_tugas_id', 'jawaban', 'is_benar', 'penjelasan_jawaban', 'nilai_cosine_similarity'];
 
     public function user()
     {

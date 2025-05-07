@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('soal_tugas_id')->constrained('soal_tugas')->onDelete('cascade');
 
             $table->text('jawaban'); // isi jawaban user
+            $table->text('penjelasan_jawaban'); // isi jawaban user
+            $table->float('nilai_cosine_similarity'); // isi jawaban user
             $table->boolean('is_benar')->nullable(); // khusus untuk PG bisa ditentukan otomatis
 
             $table->timestamps();

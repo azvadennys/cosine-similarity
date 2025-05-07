@@ -30,4 +30,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/tugas/store', [TugasController::class, 'store'])->name('tugas.store');
     Route::get('/tugas/{id}', [TugasController::class, 'show'])->name('tugas.show');
     Route::delete('/tugas/{id}', [TugasController::class, 'destroy'])->name('tugas.destroy');
+
+
+    Route::get('/tugas/kerjakan/{id}', [TugasController::class, 'kerjakan'])->name('tugas.kerjakan');
+    Route::post('/tugas/kerjakan/simpan/{id}', [TugasController::class, 'simpanJawaban'])->name('tugas.simpanJawaban');
 });

@@ -64,15 +64,21 @@
                                         <td>{{ $tugas->judul }}</td>
                                         <td>{{ \Carbon\Carbon::parse($tugas->batas_waktu)->format('d M Y H:i') }}</td>
 
-                                        <td><a href="{{ route('tugas.show', $tugas->id) }}"
-                                                class="btn btn-sm btn-primary">Lihat</a>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                            <a href="{{ route('tugas.kerjakan', $tugas->id) }}"
+                                                class="btn btn-sm btn-primary mx-1">Kerjakan</a>
+
+                                            <a href="{{ route('tugas.show', $tugas->id) }}"
+                                                class="btn btn-sm btn-info mx-1">Lihat</a>
                                             <form action="{{ route('tugas.destroy', $tugas->id) }}" method="POST"
                                                 id="deleteForm{{ $tugas->id }}">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-sm btn-danger"
-                                                    onclick="confirmDelete({{ $tugas->id }})">Hapus Tugas</button>
+                                                <button type="button" class="btn btn-sm btn-danger mx-1"
+                                                    onclick="confirmDelete({{ $tugas->id }})">Hapus</button>
                                             </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty

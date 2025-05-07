@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JawabanTugas;
 use App\Models\Kelas;
 use App\Models\SoalTugas;
 use App\Models\Tugas;
@@ -79,5 +80,67 @@ class TugasController extends Controller
         $tugas->delete();
 
         return back()->with('success', 'Berhasil Menghapus Tugas ' . $judulTugas);
+    }
+
+    public function kerjakan($tugasId)
+    {
+        $tugas = Tugas::with(['soal', 'jawaban' => function ($query) {
+            $query->with('user');
+        }])->findOrFail($tugasId);
+
+        // dd($tugas);
+
+        // Mendapatkan daftar pengguna yang telah mengerjakan tugas ini
+        $penggunaYangMengerjakan = $tugas->jawaban->pluck('user.name');
+
+        return view('tugas.kerjakan', compact('tugas', 'penggunaYangMengerjakan'));
+    }
+
+    public function simpanJawaban(Request $request, $tugasId)
+    {
+        $detailTugas = Tugas::where('id', $tugasId)->first();
+        // dd($detailTugas);
+
+        foreach ($request->soal as $idSoal) {
+            $dataSoal = SoalTugas::where('id', $idSoal)->first();
+            // dd($dataSoal);
+            $analyzer = new CosineSimilarityController();
+
+            $is_benar = Null;
+            // dd($request->tipe[$item]);
+            if ($request->tipe[$idSoal] == "pg") {
+                if ($dataSoal->jawaban_benar == $request->jawaban[$idSoal]) {
+                    $analysis = $analyzer->compareSentences($dataSoal->alasan_jawaban, $request->alasan[$idSoal]);
+                    $similarity_percentage = $analysis['similarity_percentage'];
+                    $is_benar = true;
+                } else {
+                    $similarity_percentage = 0;
+                }
+                // dd($analysis);
+                JawabanTugas::create([
+                    'user_id' => auth()->user()->id,
+                    'tugas_id' => $tugasId,
+                    'soal_tugas_id' => $idSoal,
+                    'jawaban' => $request->jawaban[$idSoal],
+                    'penjelasan_jawaban' => $request->alasan[$idSoal],
+                    'nilai_cosine_similarity' => $similarity_percentage,
+                    'is_benar' => $is_benar,
+                ]);
+            } else {
+                $analysis = $analyzer->compareSentences($dataSoal->alasan_jawaban, $request->jawaban[$idSoal]);
+                $similarity_percentage = $analysis['similarity_percentage'];
+                JawabanTugas::create([
+                    'user_id' => auth()->user()->id,
+                    'tugas_id' => $tugasId,
+                    'soal_tugas_id' => $idSoal,
+                    'jawaban' => $request->jawaban[$idSoal],
+                    'penjelasan_jawaban' => $request->jawaban[$idSoal],
+                    'nilai_cosine_similarity' => $similarity_percentage,
+                    'is_benar' => $is_benar,
+                ]);
+            }
+        }
+        return redirect()->route('kelas.show', ['kelas' => $detailTugas->kelas_id])
+            ->with('success', 'Terimakasih anda telah mengerjakan tugas');
     }
 }
