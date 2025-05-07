@@ -2,6 +2,10 @@
 
 @section('content')
     <div class="container">
+
+        <a href="{{ route('kelas.index') }}" class="btn btn-primary btn-sm mb-4">
+            <i class="bi bi-arrow-left"></i> Kembali
+        </a>
         <h1 class="mt-4">Kelas {{ $kelas->nama_kelas }}</h1>
         <h3 class="mb-2">Dosen: {{ $kelas->dosen->name }}</h3>
         <p class="mb-4">{{ $kelas->deskripsi }}</p>
@@ -69,6 +73,8 @@
                                                 @if (auth()->user()->role == 'mahasiswa')
                                                     @if ($tugas->sudahMengirimJawaban())
                                                         <button class="btn btn-sm btn-success mx-1">Selesai</button>
+                                                        <a href="{{ route('tugas.hasil', $tugas->id) }}"
+                                                            class="btn btn-sm btn-primary mx-1">Detail</a>
                                                     @else
                                                         <a href="{{ route('tugas.kerjakan', $tugas->id) }}"
                                                             class="btn btn-sm btn-primary mx-1">Kerjakan</a>

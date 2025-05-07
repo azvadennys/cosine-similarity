@@ -1,4 +1,5 @@
 @extends('index')
+
 @section('content')
     <div class="container">
         <h1 class="my-4">Kelas</h1>
@@ -14,7 +15,7 @@
 
                 <!-- Join Class Button (for mahasiswa) -->
                 @if (Auth::user()->role == 'mahasiswa')
-                    <button class="btn btn-info mb-2 mb-md-0" data-bs-toggle="modal" data-bs-target="#joinClassModal">Join
+                    <button class="btn btn-primary mb-2 mb-md-0" data-bs-toggle="modal" data-bs-target="#joinClassModal">Join
                         Kelas</button>
                 @endif
             </div>
@@ -31,21 +32,20 @@
             </div>
         </div>
 
-
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover">
                 <thead class="custom-thead">
                     <tr>
                         <th class="text-center text-white">No</th>
                         <th class="text-center text-white">Nama Kelas</th>
-                        <th class="text-white">Deskripsi</th>
-                        <th class="text-white">Dosen</th>
+                        <th class="text-center text-white">Deskripsi</th>
+                        <th class="text-center text-white">Dosen</th>
 
                         @if (Auth::user()->role == 'admin' || Auth::user()->role == 'dosen')
-                            <th class="text-white">Kode Bergabung</th>
+                            <th class="text-center text-white">Kode Bergabung</th>
                         @endif
 
-                        <th class="text-white">Actions</th>
+                        <th class="text-center text-white">Actions</th>
                     </tr>
                 </thead>
 
@@ -63,16 +63,16 @@
                                 <td class="text-center">
                                     {{ $loop->iteration + ($kelas->currentPage() - 1) * $kelas->perPage() }}</td>
                                 <td class="text-center">{{ $kls->nama_kelas }}</td>
-                                <td>{{ \Illuminate\Support\Str::words($kls->deskripsi ?? 'No description available', 5) }}
+                                <td class="text-center">{{ \Illuminate\Support\Str::words($kls->deskripsi ?? 'No description available', 5) }}
                                 </td>
-                                <td>{{ $kls->dosen->name }}</td>
+                                <td class="text-center">{{ $kls->dosen->name }}</td>
 
                                 @if (Auth::user()->role == 'admin' || Auth::user()->role == 'dosen')
                                     <td class="text-center">{{ $kls->kode_bergabung }}</td>
                                 @endif
 
-                                <td>
-                                    <div class="d-flex justify-content-start">
+                                <td class="text-center">
+                                    <div class="justify-content-start">
 
                                         <a href="{{ route('kelas.show', $kls->id) }}"
                                             class="btn btn-info btn-sm mx-2">Show</a>
@@ -159,7 +159,6 @@
         </div>
     </div>
 
-
     <!-- Join Class Modal -->
     <div class="modal fade" id="joinClassModal" tabindex="-1" aria-labelledby="joinClassModalLabel"
         aria-hidden="true">
@@ -187,6 +186,7 @@
         </div>
     </div>
 @endsection
+
 @section('scripts')
     <script>
         // Confirmation for Leave action (Mahasiswa)

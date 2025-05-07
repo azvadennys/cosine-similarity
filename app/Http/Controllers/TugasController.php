@@ -33,7 +33,7 @@ class TugasController extends Controller
         ]);
 
         foreach ($request->soal as $item) {
-            if ($item['tipe'] == "pg") {
+            if ($item['tipe'] == 'pg') {
                 SoalTugas::create([
                     'tugas_id' => $tugas->id,
                     'tipe' => $item['tipe'],
@@ -61,13 +61,16 @@ class TugasController extends Controller
 
     public function show($tugasId)
     {
-        $tugas = Tugas::with(['soal', 'jawaban' => function ($query) {
-            $query->with('user')->orderBy('created_at', 'asc');
-        }])->findOrFail($tugasId);
+        $tugas = Tugas::with([
+            'soal',
+            'jawaban' => function ($query) {
+                $query->with('user')->orderBy('created_at', 'asc');
+            },
+        ])->findOrFail($tugasId);
 
         // Mendapatkan daftar pengguna yang telah mengerjakan tugas ini (nama, email, waktu pengerjaan tanpa duplikat)
         $penggunaYangMengerjakan = $tugas->jawaban->pluck('user')->unique(function ($user) {
-            return $user->email;  // Menggunakan email untuk memastikan tidak ada duplikat
+            return $user->email; // Menggunakan email untuk memastikan tidak ada duplikat
         });
 
         // Menambahkan waktu pengerjaan, nilai total, jumlah jawaban, dan menghitung nilai rata-rata
@@ -88,15 +91,59 @@ class TugasController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'created_at' => $jawaban->first()->created_at->format('d F Y H:i'), // Menambahkan waktu pengerjaan
-                'rata_rata_nilai' => number_format($rataRataNilai, 2) // Membatasi 2 angka desimal
+                'rata_rata_nilai' => number_format($rataRataNilai, 2), // Membatasi 2 angka desimal
             ];
         });
 
         // Menyortir berdasarkan waktu pengerjaan
         $penggunaYangMengerjakan = $penggunaYangMengerjakan->sortByDesc('rata_rata_nilai');
 
-
         return view('tugas.show', compact('tugas', 'penggunaYangMengerjakan'));
+    }
+
+    // Controller method
+    public function hasilTugas($tugasId)
+    {
+        $tugas = Tugas::with([
+            'soal',
+            'jawaban' => function ($query) {
+                $query->with('user');
+            },
+        ])->findOrFail($tugasId);
+
+        // Ambil jawaban yang diinputkan oleh pengguna yang login
+        $userJawaban = $tugas->jawaban->where('user_id', auth()->user()->id);
+        // dd($userJawaban);
+        // Melakukan analisis cosine similarity dan menghasilkan laporan untuk setiap soal
+        foreach ($tugas->soal as $soal) {
+            // Mendapatkan jawaban pengguna untuk soal tertentu
+            $jawabanPengguna = $userJawaban->where('soal_tugas_id', $soal->id)->first();
+
+            if ($jawabanPengguna) {
+                // Inisialisasi analyzer untuk perbandingan kalimat
+                $analyzer = new CosineSimilarityController();
+
+                if ($soal->tipe == 'pg') {
+                    // dd($jawabanPengguna);
+                    if ($soal->jawaban_benar == $jawabanPengguna->jawaban) {
+                        $analysis = $analyzer->compareSentences($soal->alasan_jawaban, $jawabanPengguna->penjelasan_jawaban);
+                        $report = $analyzer->generateHtmlReport($analysis);
+                    } else {
+                        $report = '<div class="alert alert-danger">
+                                        Pilihan jawaban ganda anda salah.
+                                    </div>';
+                    }
+                } else {
+                    // Melakukan analisis dan menghasilkan laporan
+                    $analysis = $analyzer->compareSentences($soal->jawaban_benar, $jawabanPengguna->jawaban);
+                    $report = $analyzer->generateHtmlReport($analysis);
+                }
+                // Menambahkan laporan ke soal untuk ditampilkan di Blade
+                $soal->report = $report;
+            }
+        }
+
+        return view('tugas.hasil', compact('tugas', 'userJawaban'));
     }
 
     public function destroy($tugasId)
@@ -112,9 +159,12 @@ class TugasController extends Controller
 
     public function kerjakan($tugasId)
     {
-        $tugas = Tugas::with(['soal', 'jawaban' => function ($query) {
+        $tugas = Tugas::with([
+            'soal',
+            'jawaban' => function ($query) {
             $query->with('user');
-        }])->findOrFail($tugasId);
+            },
+        ])->findOrFail($tugasId);
 
         // dd($tugas);
 
@@ -134,9 +184,9 @@ class TugasController extends Controller
             // dd($dataSoal);
             $analyzer = new CosineSimilarityController();
 
-            $is_benar = Null;
+            $is_benar = null;
             // dd($request->tipe[$item]);
-            if ($request->tipe[$idSoal] == "pg") {
+            if ($request->tipe[$idSoal] == 'pg') {
                 if ($dataSoal->jawaban_benar == $request->jawaban[$idSoal]) {
                     $analysis = $analyzer->compareSentences($dataSoal->alasan_jawaban, $request->alasan[$idSoal]);
                     $similarity_percentage = $analysis['similarity_percentage'];
@@ -168,7 +218,8 @@ class TugasController extends Controller
                 ]);
             }
         }
-        return redirect()->route('kelas.show', ['kelas' => $detailTugas->kelas_id])
+        return redirect()
+            ->route('kelas.show', ['kelas' => $detailTugas->kelas_id])
             ->with('success', 'Terimakasih anda telah mengerjakan tugas');
     }
 }

@@ -1052,122 +1052,114 @@ class CosineSimilarityController extends Controller
 
     private function interpretSimilarity(float $score): string
     {
-        if ($score >= 0.9) return "Very high similarity (nearly identical)";
-        if ($score >= 0.7) return "High similarity (very similar content)";
-        if ($score >= 0.5) return "Moderate similarity (shared concepts)";
-        if ($score >= 0.3) return "Low similarity (some relation)";
-        if ($score > 0) return "Very low similarity (minimal relation)";
-        return "No similarity detected";
+        if ($score >= 0.9) return "Kesamaan sangat tinggi (hampir identik)";
+        if ($score >= 0.7) return "Kesamaan tinggi (konten sangat mirip)";
+        if ($score >= 0.5) return "Kesamaan sedang (konsep yang dibagikan)";
+        if ($score >= 0.3) return "Kesamaan rendah (beberapa hubungan)";
+        if ($score > 0) return "Kesamaan sangat rendah (hubungan minimal)";
+        return "Tidak ada kesamaan yang terdeteksi";
     }
 
     private function checkForWarnings(array $tokens1, array $tokens2, array $tfidf): array
     {
         $warnings = [];
 
-        // Check for empty inputs
-        if (empty($tokens1)) $warnings[] = "Sentence 1 became empty after processing";
-        if (empty($tokens2)) $warnings[] = "Sentence 2 became empty after processing";
+        // Periksa input kosong
+        if (empty($tokens1)) $warnings[] = "Kalimat 1 menjadi kosong setelah pemrosesan";
+        if (empty($tokens2)) $warnings[] = "Kalimat 2 menjadi kosong setelah pemrosesan";
 
-        // Check for no overlapping vocabulary
+        // Periksa tidak ada kosakata yang tumpang tindih
         $overlap = array_intersect($tokens1, $tokens2);
-        if (empty($overlap)) $warnings[] = "No common words between sentences";
+        if (empty($overlap)) $warnings[] = "Tidak ada kata yang sama antara kalimat";
 
-        // Check for zero IDF values
+        // Periksa nilai IDF yang nol
         $zeroIdf = array_filter($tfidf['idf_values'], function ($val) {
             return $val == 0;
         });
         if (!empty($zeroIdf)) {
-            $warnings[] = "Some terms have IDF=0 (appear in all documents): " . implode(', ', array_keys($zeroIdf));
+            $warnings[] = "Beberapa istilah memiliki IDF=0 (muncul di semua dokumen): " . implode(', ', array_keys($zeroIdf));
         }
 
         return $warnings;
     }
 
+
     public function generateHtmlReport(array $analysis): string
     {
-        $html = '<!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Enhanced Text Similarity Report</title>
-            <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
-                .container { max-width: 1000px; margin: 0 auto; }
-                .panel { border: 1px solid #ddd; border-radius: 5px; padding: 15px; margin-bottom: 20px; }
-                .similarity-score {
-                    font-size: 28px; text-align: center; margin: 20px 0; padding: 20px;
-                    background: linear-gradient(135deg, #e6f7ff, #f0faff);
-                    border-radius: 5px;
-                }
-                .score-value { font-size: 36px; font-weight: bold; color: #2c7be5; }
-                .warning {
-                    background-color: #fff3cd;
-                    border-left: 4px solid #ffc107;
-                    padding: 10px;
-                    margin: 10px 0;
-                }
-                table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-                th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
-                th { background-color: #f5f7fa; }
-                .highlight { background-color: #fffde7; }
-                .zero-value { color: #999; }
-                .bar-container { display: flex; height: 20px; background: #f0f0f0; margin-top: 5px; }
-                .bar { height: 100%; background: #4CAF50; }
-                .config-summary { background: #f8f9fa; padding: 10px; border-radius: 5px; }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1>Enhanced Text Similarity Report</h1>';
+        $html = '
+        <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+            .container { max-width: 1000px; margin: 0 auto; }
+            .panel { border: 1px solid #ddd; border-radius: 5px; padding: 15px; margin-bottom: 20px; }
+            .similarity-score {
+                font-size: 28px; text-align: center; margin: 20px 0; padding: 20px;
+                background: linear-gradient(135deg, #e6f7ff, #f0faff);
+                border-radius: 5px;
+            }
+            .score-value { font-size: 36px; font-weight: bold; color: #2c7be5; }
+            .warning {
+                background-color: #fff3cd;
+                border-left: 4px solid #ffc107;
+                padding: 10px;
+                margin: 10px 0;
+            }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+            th { background-color: #f5f7fa; }
+            .highlight { background-color: #fffde7; }
+            .zero-value { color: #999; }
+            .bar-container { display: flex; height: 20px; background: #f0f0f0; margin-top: 5px; }
+            .bar { height: 100%; background: #4CAF50; }
+            .config-summary { background: #f8f9fa; padding: 10px; border-radius: 5px; }
+        </style>
+        <div class="container">
+            <h1>Laporan Kesamaan Teks yang Ditingkatkan</h1>';
 
-        // Display warnings if any
-        if (!empty($analysis['warnings'])) {
-            $html .= '<div class="warning"><h3>⚠️ Warnings</h3><ul>';
+        // Menampilkan peringatan jika ada (memeriksa apakah warnings adalah array)
+        if (!empty($analysis['warnings']) && is_array($analysis['warnings'])) {
+            $html .= '<div class="warning"><h3>⚠️ Peringatan</h3><ul>';
             foreach ($analysis['warnings'] as $warning) {
                 $html .= '<li>' . htmlspecialchars($warning) . '</li>';
             }
             $html .= '</ul></div>';
+        } elseif (!empty($analysis['warnings']) && !is_array($analysis['warnings'])) {
+            // Jika warnings bukan array, tangani di sini (tampilkan sebagai string atau log)
+            $html .= '<div class="warning"><h3>⚠️ Peringatan</h3><p>' . htmlspecialchars($analysis['warnings']) . '</p></div>';
         }
 
+        // Bagian kalimat input
         $html .= '
-                <div class="panel">
-                    <h2>Input Sentences</h2>
-                    <p><strong>Sentence 1:</strong> ' . htmlspecialchars(implode(' ', $analysis['tokens']['sentence1'])) . '</p>
-                    <p><strong>Sentence 2:</strong> ' . htmlspecialchars(implode(' ', $analysis['tokens']['sentence2'])) . '</p>
-                </div>
+            <div class="panel">
+                <h2>Kalimat yang Dimasukkan</h2>
+                <p><strong>Kalimat 1:</strong> ' . htmlspecialchars(implode(' ', $analysis['tokens']['sentence1'])) . '</p>
+                <p><strong>Kalimat 2:</strong> ' . htmlspecialchars(implode(' ', $analysis['tokens']['sentence2'])) . '</p>
+            </div>';
 
-                <div class="panel config-summary">
-                    <h2>Configuration</h2>
-                    <p><strong>Case Sensitive:</strong> ' . ($analysis['config']['case_sensitive'] ? 'Yes' : 'No') . '</p>
-                    <p><strong>Keep Punctuation:</strong> ' . ($analysis['config']['keep_punctuation'] ? 'Yes' : 'No') . '</p>
-                    <p><strong>Remove Stopwords:</strong> ' . ($analysis['config']['remove_stopwords'] ? 'Yes' : 'No') . '</p>
-                    <p><strong>TF Method:</strong> ' . htmlspecialchars($analysis['config']['tf_method']) . '</p>
-                    <p><strong>IDF Method:</strong> ' . htmlspecialchars($analysis['config']['idf_method']) . '</p>
-                    <p><strong>Normalize Vectors:</strong> ' . ($analysis['config']['normalize_vectors'] ? 'Yes' : 'No') . '</p>
+        // Bagian hasil kesamaan
+        $html .= '
+            <div class="panel similarity-score">
+                <h2>Hasil Kesamaan</h2>
+                <div class="score-value">' . $analysis['similarity_percentage'] . '%</div>
+                <p>' . $analysis['interpretation'] . '</p>
+                <div class="bar-container">
+                    <div class="bar" style="width: ' . $analysis['similarity_percentage'] . '%"></div>
                 </div>
+            </div>';
 
-                <div class="panel similarity-score">
-                    <h2>Similarity Result</h2>
-                    <div class="score-value">' . $analysis['similarity_percentage'] . '%</div>
-                    <p>' . $analysis['interpretation'] . '</p>
-                    <div class="bar-container">
-                        <div class="bar" style="width: ' . $analysis['similarity_percentage'] . '%"></div>
-                    </div>
-                </div>
-
-                <div class="panel">
-                    <h2>Term Analysis</h2>
-                    <table>
-                        <tr>
-                            <th>Term</th>
-                            <th>TF Sentence 1</th>
-                            <th>TF Sentence 2</th>
-                            <th>IDF</th>
-                            <th>TF-IDF Sentence 1</th>
-                            <th>TF-IDF Sentence 2</th>
-                            <th>Contribution</th>
-                        </tr>';
+        // Bagian analisis istilah
+        $html .= '
+            <div class="table-responsive">
+                <h2>Analisis Istilah</h2>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Istilah</th>
+                        <th>TF Kalimat 1</th>
+                        <th>TF Kalimat 2</th>
+                        <th>IDF</th>
+                        <th>TF-IDF Kalimat 1</th>
+                        <th>TF-IDF Kalimat 2</th>
+                        <th>Kontribusi</th>
+                    </tr>';
 
         foreach ($analysis['vectors']['vocabulary'] as $term) {
             $tf1 = $analysis['vectors']['term_frequencies']['sentence1'][$term] ?? 0;
@@ -1177,25 +1169,24 @@ class CosineSimilarityController extends Controller
             $tfidf2 = $analysis['vectors']['vector2'][$term] ?? 0;
             $contribution = $tfidf1 * $tfidf2;
 
+            // Menandai istilah dengan kontribusi lebih dari 0
             $rowClass = $contribution > 0 ? 'highlight' : '';
             $zeroClass = fn($val) => $val == 0 ? 'zero-value' : '';
 
             $html .= '<tr class="' . $rowClass . '">
-                <td><strong>' . htmlspecialchars($term) . '</strong></td>
-                <td class="' . $zeroClass($tf1) . '">' . number_format($tf1, 4) . '</td>
-                <td class="' . $zeroClass($tf2) . '">' . number_format($tf2, 4) . '</td>
-                <td>' . number_format($idf, 4) . '</td>
-                <td class="' . $zeroClass($tfidf1) . '">' . number_format($tfidf1, 4) . '</td>
-                <td class="' . $zeroClass($tfidf2) . '">' . number_format($tfidf2, 4) . '</td>
-                <td class="' . $zeroClass($contribution) . '">' . number_format($contribution, 4) . '</td>
-            </tr>';
+            <td><strong>' . htmlspecialchars($term) . '</strong></td>
+            <td class="' . $zeroClass($tf1) . '">' . number_format($tf1, 4) . '</td>
+            <td class="' . $zeroClass($tf2) . '">' . number_format($tf2, 4) . '</td>
+            <td>' . number_format($idf, 4) . '</td>
+            <td class="' . $zeroClass($tfidf1) . '">' . number_format($tfidf1, 4) . '</td>
+            <td class="' . $zeroClass($tfidf2) . '">' . number_format($tfidf2, 4) . '</td>
+            <td class="' . $zeroClass($contribution) . '">' . number_format($contribution, 4) . '</td>
+        </tr>';
         }
 
         $html .= '</table>
-                </div>
             </div>
-        </body>
-        </html>';
+        </div>';
 
         return $html;
     }

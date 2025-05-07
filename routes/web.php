@@ -30,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/tugas/store', [TugasController::class, 'store'])->name('tugas.store');
     Route::get('/tugas/{id}', [TugasController::class, 'show'])->name('tugas.show');
     Route::delete('/tugas/{id}', [TugasController::class, 'destroy'])->name('tugas.destroy');
+    Route::get('/tugas/hasil/{id}', [TugasController::class, 'hasilTugas'])->name('tugas.hasil');
 
 
     Route::get('/tugas/kerjakan/{id}', [TugasController::class, 'kerjakan'])->name('tugas.kerjakan');
