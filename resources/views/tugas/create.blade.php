@@ -138,6 +138,10 @@
                     pgInputs.forEach(input => {
                         input.setAttribute('required', 'required');
                     });
+                    const pgInputstextarea = pgContainer.querySelectorAll('input, textarea');
+                    pgInputstextarea.forEach(input => {
+                        input.setAttribute('required', 'required');
+                    });
 
                     // Hapus required untuk elemen essay
                     const essayInputs = essayContainer.querySelectorAll('input, textarea');
@@ -158,6 +162,10 @@
                     // Hapus required untuk elemen pilihan ganda
                     const pgInputs = pgContainer.querySelectorAll('input, select');
                     pgInputs.forEach(input => {
+                        input.removeAttribute('required');
+                    });
+                    const pgInputstextarea = pgContainer.querySelectorAll('input, textarea');
+                    pgInputstextarea.forEach(input => {
                         input.removeAttribute('required');
                     });
                 }

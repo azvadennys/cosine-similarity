@@ -22,6 +22,10 @@
                         <li class="nav-item"><a class="nav-link {{ Request::is('/') ? 'active' : '' }}"
                                 href="{{ url('/') }}">Beranda</a></li>
                         @auth
+                            @if(auth()->user()->role == 'admin')
+                            <li class="nav-item"><a class="nav-link {{ Request::is('pengguna*') ? 'active' : '' }}"
+                                    href="{{ route('pengguna.index') }}">Pengguna</a></li>
+                            @endif
                             <li class="nav-item"><a class="nav-link {{ Request::is('kelas*') ? 'active' : '' }}"
                                     href="{{ route('kelas.index') }}">Kelas</a></li>
                         @endauth
