@@ -37,12 +37,12 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string',
             'role' => 'required|in:admin,dosen,mahasiswa',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('users.create')
+            return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -55,7 +55,7 @@ class UserController extends Controller
             'role' => $request->role,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'Pengguna berhasil dibuat.');
+        return redirect()->back()->with('success', 'Pengguna berhasil dibuat.');
     }
 
     // Menampilkan detail pengguna
@@ -71,38 +71,48 @@ class UserController extends Controller
     }
 
     // Memperbarui data pengguna
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user, $id)
     {
+        $userDetail = User::where('id', $id)->first();
+        // Jika email yang diinput sama dengan email lama, abaikan validasi unique
+        $emailRule = 'required|string|email|max:255';
+        if ($request->email !== $userDetail->email) {
+            $emailRule .= '|unique:users,email';
+        }
+        // dd($request);
+
         // Validasi data input
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:8|confirmed',
+            'email' => $emailRule,
+            'password' => 'nullable|string|', // Validasi password, minimal 8 karakter
             'role' => 'required|in:admin,dosen,mahasiswa',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route('users.edit', $user->id)
+            return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
 
         // Perbarui data pengguna
-        $user->update([
+        $userDetail->update([
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
-            'password' => $request->password ? Hash::make($request->password) : $user->password,
+            'password' => $request->password ? Hash::make($request->password) : $userDetail->password,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'Pengguna berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Pengguna berhasil diperbarui.');
     }
 
+
     // Menghapus pengguna
-    public function destroy(User $user)
+    public function destroy(User $user, $id)
     {
 
+        $user = User::where('id', $id)->first();
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'Pengguna berhasil dihapus.');
+        return redirect()->back()->with('success', 'Pengguna berhasil dihapus.');
     }
 }

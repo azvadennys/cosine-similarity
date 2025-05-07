@@ -43,6 +43,9 @@ Route::middleware(['auth'])->group(
         Route::get('/pengguna', [UserController::class, 'index'])->name('pengguna.index');
         Route::get('/pengguna/create', [UserController::class, 'create'])->name('pengguna.create');
         Route::post('/pengguna', [UserController::class, 'store'])->name('pengguna.store');
-        Route::delete('/pengguna/{id}', [UserController::class, 'destroy'])->name('pengguna.destroy');
+        Route::get('/pengguna/{pengguna}', [UserController::class, 'show'])->name('pengguna.show');
+        Route::get('/pengguna/{pengguna}/edit', [UserController::class, 'edit'])->name('pengguna.edit');
+        Route::put('/pengguna/{pengguna}', [UserController::class, 'update'])->name('pengguna.update');
+        Route::delete('/pengguna/{pengguna}', [UserController::class, 'destroy'])->name('pengguna.destroy');
     }
 );
