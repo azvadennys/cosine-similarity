@@ -17,25 +17,25 @@ class UserSeeder extends Seeder
         // Buat 1 admin
         User::factory()->admin()->create([
             'name' => 'Admin User',
-            'email' => 'admin@example.com',
+            'email' => 'admin@gmail.com',
         ]);
 
         // Buat 1 Dosen
         User::factory()->dosen()->create([
             'name' => 'Dosen User',
-            'email' => 'dosen@example.com',
+            'email' => 'dosen@gmail.com',
         ]);
 
         // Buat 1 Mahasiswa
         User::factory()->mahasiswa()->create([
             'name' => 'Mahasiswa User',
-            'email' => 'mahasiswa@example.com',
+            'email' => 'mahasiswa@gmail.com',
         ]);
 
         // Buat 5 dosen
-        User::factory(5)->dosen()->create();
+        // User::factory(5)->dosen()->create();
 
         // Buat 10 mahasiswa
-        User::factory(15)->mahasiswa()->create();
+        // User::factory(15)->mahasiswa()->create();
     }
 }

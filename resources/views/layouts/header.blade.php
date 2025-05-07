@@ -28,7 +28,9 @@
 
 
                         @guest
-                            <li class="nav-item"><a class="btn btn-primary mx-2" style="padding: 8px 25px"
+                        <li class="nav-item"><a class="nav-link {{ Request::is('register') ? 'active' : '' }}"
+                                    href="{{route('register') }}">Registrasi</a></li>
+                            <li class="nav-item"><a class="btn btn-primary mx-2"
                                     href="{{route('login') }}">Login</a></li>
                         @endguest
                         @auth
