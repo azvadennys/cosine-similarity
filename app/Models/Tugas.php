@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Tugas extends Model
 {
@@ -13,6 +14,10 @@ class Tugas extends Model
     public function jawaban()
     {
         return $this->hasMany(JawabanTugas::class);
+    }
+    public function sudahMengirimJawaban()
+    {
+        return $this->jawaban()->where('user_id', Auth::id())->exists();
     }
     public function soal()
     {

@@ -36,12 +36,31 @@
         <hr>
 
         <h4>Daftar Pengguna yang Sudah Mengerjakan</h4>
-        <ul>
-            @forelse ($penggunaYangMengerjakan as $pengguna)
-                <li>{{ $pengguna }}</li>
-            @empty
-                <p>Belum ada pengguna yang mengerjakan tugas ini.</p>
-            @endforelse
-        </ul>
+
+@if($penggunaYangMengerjakan->isEmpty())
+    <p>Belum ada pengguna yang mengerjakan tugas ini.</p>
+@else
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Nilai</th>
+                <th>Waktu Selesai</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($penggunaYangMengerjakan as $pengguna)
+                <tr>
+                    <td>{{ $pengguna['name'] }}</td>
+                    <td>{{ $pengguna['email'] }}</td>
+                    <td>{{ $pengguna['rata_rata_nilai'] }}</td>
+                    <td>{{ $pengguna['created_at'] }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+@endif
+
     </div>
 @endsection

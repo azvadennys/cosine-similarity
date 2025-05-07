@@ -62,11 +62,39 @@ class TugasController extends Controller
     public function show($tugasId)
     {
         $tugas = Tugas::with(['soal', 'jawaban' => function ($query) {
-            $query->with('user');
+            $query->with('user')->orderBy('created_at', 'asc');
         }])->findOrFail($tugasId);
 
-        // Mendapatkan daftar pengguna yang telah mengerjakan tugas ini
-        $penggunaYangMengerjakan = $tugas->jawaban->pluck('user.name');
+        // Mendapatkan daftar pengguna yang telah mengerjakan tugas ini (nama, email, waktu pengerjaan tanpa duplikat)
+        $penggunaYangMengerjakan = $tugas->jawaban->pluck('user')->unique(function ($user) {
+            return $user->email;  // Menggunakan email untuk memastikan tidak ada duplikat
+        });
+
+        // Menambahkan waktu pengerjaan, nilai total, jumlah jawaban, dan menghitung nilai rata-rata
+        $penggunaYangMengerjakan = $penggunaYangMengerjakan->map(function ($user) use ($tugas) {
+            // Ambil jawaban terkait dengan user tersebut
+            $jawaban = $tugas->jawaban->where('user_id', $user->id);
+
+            // Total nilai cosine similarity
+            $totalNilai = $jawaban->sum('nilai_cosine_similarity');
+
+            // Jumlah jawaban yang dikirim
+            $jumlahJawaban = $jawaban->count();
+
+            // Menghitung nilai rata-rata
+            $rataRataNilai = $jumlahJawaban > 0 ? $totalNilai / $jumlahJawaban : 0;
+
+            return [
+                'name' => $user->name,
+                'email' => $user->email,
+                'created_at' => $jawaban->first()->created_at->format('d F Y H:i'), // Menambahkan waktu pengerjaan
+                'rata_rata_nilai' => number_format($rataRataNilai, 2) // Membatasi 2 angka desimal
+            ];
+        });
+
+        // Menyortir berdasarkan waktu pengerjaan
+        $penggunaYangMengerjakan = $penggunaYangMengerjakan->sortByDesc('rata_rata_nilai');
+
 
         return view('tugas.show', compact('tugas', 'penggunaYangMengerjakan'));
     }

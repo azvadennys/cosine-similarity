@@ -66,18 +66,26 @@
 
                                         <td>
                                             <div class="d-flex justify-content-center">
-                                            <a href="{{ route('tugas.kerjakan', $tugas->id) }}"
-                                                class="btn btn-sm btn-primary mx-1">Kerjakan</a>
+                                                @if (auth()->user()->role == 'mahasiswa')
+                                                    @if ($tugas->sudahMengirimJawaban())
+                                                        <button class="btn btn-sm btn-success mx-1">Selesai</button>
+                                                    @else
+                                                        <a href="{{ route('tugas.kerjakan', $tugas->id) }}"
+                                                            class="btn btn-sm btn-primary mx-1">Kerjakan</a>
+                                                    @endif
+                                                @endif
 
-                                            <a href="{{ route('tugas.show', $tugas->id) }}"
-                                                class="btn btn-sm btn-info mx-1">Lihat</a>
-                                            <form action="{{ route('tugas.destroy', $tugas->id) }}" method="POST"
-                                                id="deleteForm{{ $tugas->id }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="btn btn-sm btn-danger mx-1"
-                                                    onclick="confirmDelete({{ $tugas->id }})">Hapus</button>
-                                            </form>
+                                                @if (auth()->user()->role != 'mahasiswa')
+                                                    <a href="{{ route('tugas.show', $tugas->id) }}"
+                                                        class="btn btn-sm btn-info mx-1">Lihat</a>
+                                                    <form action="{{ route('tugas.destroy', $tugas->id) }}" method="POST"
+                                                        id="deleteForm{{ $tugas->id }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-sm btn-danger mx-1"
+                                                            onclick="confirmDelete({{ $tugas->id }})">Hapus</button>
+                                                    </form>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
