@@ -63,7 +63,8 @@
                                 <td class="text-center">
                                     {{ $loop->iteration + ($kelas->currentPage() - 1) * $kelas->perPage() }}</td>
                                 <td class="text-center">{{ $kls->nama_kelas }}</td>
-                                <td class="text-center">{{ \Illuminate\Support\Str::words($kls->deskripsi ?? 'No description available', 5) }}
+                                <td class="text-center">
+                                    {{ \Illuminate\Support\Str::words($kls->deskripsi ?? 'No description available', 5) }}
                                 </td>
                                 <td class="text-center">{{ $kls->dosen->name }}</td>
 
@@ -114,11 +115,11 @@
 
     <!-- Create Class Modal -->
     <div class="modal fade" id="createClassModal" tabindex="-1" aria-labelledby="createClassModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered"><!-- hilangkan class modal di sini -->
             <form method="POST" action="{{ route('kelas.store') }}">
                 @csrf
                 <div class="modal-content">
-                    <div class="modal-header text-white">
+                    <div class="modal-header text-white bg-secondary">
                         <h5 class="modal-title" id="createClassModalLabel">Create New Class</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Close"></button>
@@ -151,7 +152,8 @@
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Cancel</button><!-- hapus aria-label -->
                         <button type="submit" class="btn btn-primary">Create Class</button>
                     </div>
                 </div>
@@ -178,13 +180,15 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Close</button><!-- hapus aria-label -->
                         <button type="submit" class="btn btn-success">Join</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+
 @endsection
 
 @section('scripts')
@@ -224,13 +228,5 @@
                 }
             });
         }
-
-        $(document).ready(function() {
-            $('#dosen_id').select2({
-                dropdownParent: $('#createClassModal'),
-                placeholder: 'Select a lecturer',
-                allowClear: true
-            });
-        });
     </script>
 @endsection

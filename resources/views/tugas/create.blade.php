@@ -2,6 +2,9 @@
 
 @section('content')
     <div class="container">
+
+        <a href="{{ route('kelas.show', $kelas->id) }}" class="btn btn-primary btn-sm mb-4">
+            <i class="bi bi-arrow-left"></i> Kembali</a>
         <h2 class="mb-4">Buat Tugas Baru</h2>
 
         <form action="{{ route('tugas.store') }}" method="POST">
