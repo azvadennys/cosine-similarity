@@ -46,9 +46,11 @@
                 <div class="card shadow-sm">
                     <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 text-white">Daftar Tugas</h5>
+                        @if (auth()->user()->role != "mahasiswa")
                         <a href="{{ route('tugas.create', $kelas->id) }}" class="btn btn-light btn-sm text-success">
                             Buat Tugas
                         </a>
+                        @endif
                     </div>
 
                     <div class="card-body p-2">
