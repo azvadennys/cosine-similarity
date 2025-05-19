@@ -88,6 +88,7 @@ class TugasController extends Controller
             $rataRataNilai = $jumlahJawaban > 0 ? $totalNilai / $jumlahJawaban : 0;
 
             return [
+                'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'created_at' => $jawaban->first()->created_at->format('d F Y H:i'), // Menambahkan waktu pengerjaan
@@ -97,8 +98,51 @@ class TugasController extends Controller
 
         // Menyortir berdasarkan waktu pengerjaan
         $penggunaYangMengerjakan = $penggunaYangMengerjakan->sortByDesc('rata_rata_nilai');
-
         return view('tugas.show', compact('tugas', 'penggunaYangMengerjakan'));
+    }
+
+    public function hasilTugasAdmin($tugasId, $user_id)
+    {
+        $tugas = Tugas::with([
+            'soal',
+            'jawaban' => function ($query) {
+                $query->with('user');
+            },
+        ])->findOrFail($tugasId);
+
+        // Ambil jawaban yang diinputkan oleh pengguna yang login
+        $userJawaban = $tugas->jawaban->where('user_id', $user_id);
+        // dd($userJawaban);
+        // Melakukan analisis cosine similarity dan menghasilkan laporan untuk setiap soal
+        foreach ($tugas->soal as $soal) {
+            // Mendapatkan jawaban pengguna untuk soal tertentu
+            $jawabanPengguna = $userJawaban->where('soal_tugas_id', $soal->id)->first();
+
+            if ($jawabanPengguna) {
+                // Inisialisasi analyzer untuk perbandingan kalimat
+                $analyzer = new CosineSimilarityController();
+
+                if ($soal->tipe == 'pg') {
+                    // dd($jawabanPengguna);
+                    if ($soal->jawaban_benar == $jawabanPengguna->jawaban) {
+                        $analysis = $analyzer->compareSentences($soal->alasan_jawaban, $jawabanPengguna->penjelasan_jawaban);
+                        $report = $analyzer->generateHtmlReport($analysis);
+                    } else {
+                        $report = '<div class="alert alert-danger">
+                                        Pilihan jawaban ganda anda salah.
+                                    </div>';
+                    }
+                } else {
+                    // Melakukan analisis dan menghasilkan laporan
+                    $analysis = $analyzer->compareSentences($soal->jawaban_benar, $jawabanPengguna->jawaban);
+                    $report = $analyzer->generateHtmlReport($analysis);
+                }
+                // Menambahkan laporan ke soal untuk ditampilkan di Blade
+                $soal->report = $report;
+            }
+        }
+
+        return view('tugas.hasil', compact('tugas', 'userJawaban'));
     }
 
     // Controller method

@@ -54,15 +54,21 @@
                                 <th>Email</th>
                                 <th>Nilai</th>
                                 <th>Waktu Selesai</th>
+                                <th>Detail</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($penggunaYangMengerjakan as $pengguna)
+                            @php
+                            $id_user = $pengguna['id'];
+                            @endphp
                                 <tr>
                                     <td>{{ $pengguna['name'] }}</td>
                                     <td>{{ $pengguna['email'] }}</td>
                                     <td>{{ $pengguna['rata_rata_nilai'] }}</td>
                                     <td>{{ $pengguna['created_at'] }}</td>
+                                    <td><a href="{{ route('tugas.hasil.admin', [$tugas->id, $id_user]) }}" class="btn btn-sm btn-primary">Detail</a></td>
+
                                 </tr>
                             @endforeach
                         </tbody>

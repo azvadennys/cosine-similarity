@@ -5,6 +5,7 @@
         <a href="{{ route('kelas.show', $tugas->kelas->id) }}" class="btn btn-primary btn-sm mb-4"><i
                 class="bi bi-arrow-left"></i> Kembali</a>
         <h2 class="mt-4">Tugas: {{ $tugas->judul }}</h2>
+        <h5 class="mt-4">Mahasiswa: {{ $tugas->jawaban->first()->user->name }}</h5>
         <p class="mb-2">{{ $tugas->deskripsi }}</p>
         <p class="mb-4">Batas Waktu: {{ \Carbon\Carbon::parse($tugas->batas_waktu)->format('d M Y H:i') }}</p>
 
@@ -44,7 +45,9 @@
                                                 <th>Jawaban Pengguna</th>
                                                 <th>Alasan Jawaban Pengguna</th>
                                                 <th>Nilai</th>
+                                                @if(auth()->user()->role != "mahasiswa")
                                                 <th>Detail</th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -58,6 +61,7 @@
                                                 <td>
                                                     {{ $jawabanPengguna->nilai_cosine_similarity }}
                                                 </td>
+                                                 @if(auth()->user()->role != "mahasiswa")
                                                 <td>
                                                     <button class="btn btn-primary btn-sm toggle-detail"
                                                         data-bs-toggle="collapse" href="#collapseDetail{{ $soal->id }}"
@@ -66,6 +70,7 @@
                                                         Lihat Detail
                                                     </button>
                                                 </td>
+                                                @endif
                                             </tr>
                                         </tbody>
                                     </table>
@@ -94,7 +99,9 @@
                                             <tr>
                                                 <th>Jawaban Pengguna</th>
                                                 <th>Nilai</th>
+                                                 @if(auth()->user()->role != "mahasiswa")
                                                 <th>Detail</th>
+                                                @endif
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -105,6 +112,7 @@
                                                 <td>
                                                     {{ $jawabanPengguna->nilai_cosine_similarity }}
                                                 </td>
+                                                 @if(auth()->user()->role != "mahasiswa")
                                                 <td>
                                                     <button class="btn btn-primary btn-sm toggle-detail"
                                                         data-bs-toggle="collapse" href="#collapseDetail{{ $soal->id }}"
@@ -113,6 +121,7 @@
                                                         Lihat Detail
                                                     </button>
                                                 </td>
+                                                @endif
                                             </tr>
                                         </tbody>
                                     </table>

@@ -30,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tugas/create/{id}', [TugasController::class, 'create'])->name('tugas.create');
     Route::post('/tugas/store', [TugasController::class, 'store'])->name('tugas.store');
     Route::get('/tugas/{id}', [TugasController::class, 'show'])->name('tugas.show');
+    Route::get('/tugas/hasil/{id}/{id_user}', [TugasController::class, 'hasilTugasAdmin'])->name('tugas.hasil.admin');
     Route::delete('/tugas/{id}', [TugasController::class, 'destroy'])->name('tugas.destroy');
     Route::get('/tugas/hasil/{id}', [TugasController::class, 'hasilTugas'])->name('tugas.hasil');
 
