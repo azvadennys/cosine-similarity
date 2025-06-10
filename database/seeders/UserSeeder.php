@@ -14,6 +14,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        for ($i = 1; $i <= 80; $i++) {
+            User::factory()->mahasiswa()->create([
+                'name' => 'Mahasiswa ' . str_pad($i, 3, '0', STR_PAD_LEFT),
+                'email' => 'mahasiswa' . str_pad($i, 3, '0', STR_PAD_LEFT) . '@gmail.com',
+            ]);
+        }
+
         // Buat 1 admin
         User::factory()->admin()->create([
             'name' => 'Admin User',
@@ -31,6 +38,8 @@ class UserSeeder extends Seeder
             'name' => 'Mahasiswa User',
             'email' => 'mahasiswa@gmail.com',
         ]);
+
+
 
         // Buat 5 dosen
         // User::factory(5)->dosen()->create();
