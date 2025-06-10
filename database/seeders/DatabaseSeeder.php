@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             KelasSeeder::class, // Seeder untuk kelas dan kelas_mahasiswa
             TugasSeeder::class, // Seeder untuk Tugas
             SoalTugasSeeder::class, // Seeder untuk  Soal Tugas
+            JawabanSoalSeeder::class
         ]);
     }
 }

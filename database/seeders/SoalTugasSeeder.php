@@ -70,8 +70,64 @@ class SoalTugasSeeder extends Seeder
                 'jawaban_benar' => 'C',
                 'alasan_jawaban' => 'Normalisasi adalah proses untuk menyusun data agar tidak terjadi pengulangan (redundansi) dan untuk menjaga konsistensi dan integritas data. Ini dilakukan dengan membagi data menjadi beberapa tabel dan menghubungkannya dengan kunci.',
             ],
-            //ID 2
 
+        ];
+
+        // Soal Essay
+        $soalEssay = [
+            [
+                'tugas_id' => 1, // Gantilah dengan ID tugas yang sesuai
+                'tipe' => 'essay',
+                'pertanyaan' => 'Jelaskan perbedaan antara DBMS dan RDBMS serta berikan contohnya!',
+                'jawaban_benar' => 'DBMS (Database Management System) mengelola data tanpa struktur relasional (contoh: XML database). RDBMS (Relational DBMS) menyimpan data dalam bentuk tabel yang saling berelasi (contoh: MySQL, PostgreSQL).',
+                'alasan_jawaban' => 'DBMS (Database Management System) mengelola data tanpa struktur relasional (contoh: XML database). RDBMS (Relational DBMS) menyimpan data dalam bentuk tabel yang saling berelasi (contoh: MySQL, PostgreSQL).',
+            ],
+            [
+                'tugas_id' => 1,
+                'tipe' => 'essay',
+                'pertanyaan' => 'Apa itu normalisasi dan mengapa penting dalam perancangan basis data?',
+                'jawaban_benar' => 'Normalisasi adalah proses pengorganisasian data untuk mengurangi duplikasi dan inkonsistensi. Penting untuk memastikan efisiensi penyimpanan dan integritas data.',
+                'alasan_jawaban' => 'Normalisasi adalah proses pengorganisasian data untuk mengurangi duplikasi dan inkonsistensi. Penting untuk memastikan efisiensi penyimpanan dan integritas data.',
+            ],
+            [
+                'tugas_id' => 1,
+                'tipe' => 'essay',
+                'pertanyaan' => 'Jelaskan perbedaan antara PRIMARY KEY dan FOREIGN KEY dalam basis data!',
+                'jawaban_benar' => 'PRIMARY KEY: atribut yang secara unik mengidentifikasi tiap baris dalam tabel. FOREIGN KEY: atribut yang mengacu pada PRIMARY KEY di tabel lain untuk membentuk relasi antar tabel.',
+                'alasan_jawaban' => 'PRIMARY KEY: atribut yang secara unik mengidentifikasi tiap baris dalam tabel. FOREIGN KEY: atribut yang mengacu pada PRIMARY KEY di tabel lain untuk membentuk relasi antar tabel.',
+            ],
+            [
+                'tugas_id' => 1,
+                'tipe' => 'essay',
+                'pertanyaan' => 'Sebutkan dan jelaskan tiga jenis perintah utama dalam SQL!',
+                'jawaban_benar' => 'DDL (Data Definition Language): untuk mendefinisikan struktur (contoh: CREATE, ALTER). DML (Data Manipulation Language): untuk manipulasi data (contoh: INSERT, UPDATE, DELETE). DCL (Data Control Language): untuk kontrol hak akses (contoh: GRANT, REVOKE).',
+                'alasan_jawaban' => 'DDL (Data Definition Language): untuk mendefinisikan struktur (contoh: CREATE, ALTER). DML (Data Manipulation Language): untuk manipulasi data (contoh: INSERT, UPDATE, DELETE). DCL (Data Control Language): untuk kontrol hak akses (contoh: GRANT, REVOKE).',
+            ],
+            [
+                'tugas_id' => 1,
+                'tipe' => 'essay',
+                'pertanyaan' => 'Jelaskan langkah-langkah umum dalam merancang basis data relasional!',
+                'jawaban_benar' => '1. Menentukan kebutuhan data (analisis kebutuhan). 2. Membuat diagram ERD (Entity Relationship Diagram). 3. Mengonversi ERD ke model relasional. 4. Menentukan kunci primer dan relasi antar tabel. 5. Melakukan normalisasi. 6. Mengimplementasikan ke dalam DBMS.',
+                'alasan_jawaban' => '1. Menentukan kebutuhan data (analisis kebutuhan). 2. Membuat diagram ERD (Entity Relationship Diagram). 3. Mengonversi ERD ke model relasional. 4. Menentukan kunci primer dan relasi antar tabel. 5. Melakukan normalisasi. 6. Mengimplementasikan ke dalam DBMS.',
+                // ID 2
+            ],
+
+        ];
+
+        // Insert soal pilihan ganda
+        foreach ($soalPilihanGanda as $soal) {
+            DB::table('soal_tugas')->insert($soal);
+        }
+
+        // Insert soal essay
+        foreach ($soalEssay as $soal) {
+            DB::table('soal_tugas')->insert($soal);
+        }
+
+        // ID 2
+
+        // Soal Pilihan Ganda
+        $soalPilihanGanda = [
             [
                 'tugas_id' => 2, // tugas_id 2 untuk tugas ini
                 'tipe' => 'pg',
@@ -131,42 +187,6 @@ class SoalTugasSeeder extends Seeder
 
         // Soal Essay
         $soalEssay = [
-            [
-                'tugas_id' => 1, // Gantilah dengan ID tugas yang sesuai
-                'tipe' => 'essay',
-                'pertanyaan' => 'Jelaskan perbedaan antara DBMS dan RDBMS serta berikan contohnya!',
-                'jawaban_benar' => 'DBMS (Database Management System) mengelola data tanpa struktur relasional (contoh: XML database). RDBMS (Relational DBMS) menyimpan data dalam bentuk tabel yang saling berelasi (contoh: MySQL, PostgreSQL).',
-                'alasan_jawaban' => 'DBMS (Database Management System) mengelola data tanpa struktur relasional (contoh: XML database). RDBMS (Relational DBMS) menyimpan data dalam bentuk tabel yang saling berelasi (contoh: MySQL, PostgreSQL).',
-            ],
-            [
-                'tugas_id' => 1,
-                'tipe' => 'essay',
-                'pertanyaan' => 'Apa itu normalisasi dan mengapa penting dalam perancangan basis data?',
-                'jawaban_benar' => 'Normalisasi adalah proses pengorganisasian data untuk mengurangi duplikasi dan inkonsistensi. Penting untuk memastikan efisiensi penyimpanan dan integritas data.',
-                'alasan_jawaban' => 'Normalisasi adalah proses pengorganisasian data untuk mengurangi duplikasi dan inkonsistensi. Penting untuk memastikan efisiensi penyimpanan dan integritas data.',
-            ],
-            [
-                'tugas_id' => 1,
-                'tipe' => 'essay',
-                'pertanyaan' => 'Jelaskan perbedaan antara PRIMARY KEY dan FOREIGN KEY dalam basis data!',
-                'jawaban_benar' => 'PRIMARY KEY: atribut yang secara unik mengidentifikasi tiap baris dalam tabel. FOREIGN KEY: atribut yang mengacu pada PRIMARY KEY di tabel lain untuk membentuk relasi antar tabel.',
-                'alasan_jawaban' => 'PRIMARY KEY: atribut yang secara unik mengidentifikasi tiap baris dalam tabel. FOREIGN KEY: atribut yang mengacu pada PRIMARY KEY di tabel lain untuk membentuk relasi antar tabel.',
-            ],
-            [
-                'tugas_id' => 1,
-                'tipe' => 'essay',
-                'pertanyaan' => 'Sebutkan dan jelaskan tiga jenis perintah utama dalam SQL!',
-                'jawaban_benar' => 'DDL (Data Definition Language): untuk mendefinisikan struktur (contoh: CREATE, ALTER). DML (Data Manipulation Language): untuk manipulasi data (contoh: INSERT, UPDATE, DELETE). DCL (Data Control Language): untuk kontrol hak akses (contoh: GRANT, REVOKE).',
-                'alasan_jawaban' => 'DDL (Data Definition Language): untuk mendefinisikan struktur (contoh: CREATE, ALTER). DML (Data Manipulation Language): untuk manipulasi data (contoh: INSERT, UPDATE, DELETE). DCL (Data Control Language): untuk kontrol hak akses (contoh: GRANT, REVOKE).',
-            ],
-            [
-                'tugas_id' => 1,
-                'tipe' => 'essay',
-                'pertanyaan' => 'Jelaskan langkah-langkah umum dalam merancang basis data relasional!',
-                'jawaban_benar' => '1. Menentukan kebutuhan data (analisis kebutuhan). 2. Membuat diagram ERD (Entity Relationship Diagram). 3. Mengonversi ERD ke model relasional. 4. Menentukan kunci primer dan relasi antar tabel. 5. Melakukan normalisasi. 6. Mengimplementasikan ke dalam DBMS.',
-                'alasan_jawaban' => '1. Menentukan kebutuhan data (analisis kebutuhan). 2. Membuat diagram ERD (Entity Relationship Diagram). 3. Mengonversi ERD ke model relasional. 4. Menentukan kunci primer dan relasi antar tabel. 5. Melakukan normalisasi. 6. Mengimplementasikan ke dalam DBMS.',
-                // ID 2
-            ],
             [
                 'tugas_id' => 2, // tugas_id 2
                 'tipe' => 'essay',
