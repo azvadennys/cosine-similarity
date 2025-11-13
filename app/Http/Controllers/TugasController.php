@@ -90,6 +90,7 @@ class TugasController extends Controller
             return [
                 'id' => $user->id,
                 'name' => $user->name,
+                'npm' => $user->npm,
                 'email' => $user->email,
                 'created_at' => $jawaban->first()->created_at->format('d F Y H:i'), // Menambahkan waktu pengerjaan
                 'rata_rata_nilai' => number_format($rataRataNilai, 2), // Membatasi 2 angka desimal

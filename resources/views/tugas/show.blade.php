@@ -50,7 +50,8 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Nama</th>
+                                <th>NPM</th>
                                 <th>Email</th>
                                 <th>Nilai</th>
                                 <th>Waktu Selesai</th>
@@ -64,6 +65,7 @@
                             @endphp
                                 <tr>
                                     <td>{{ $pengguna['name'] }}</td>
+                                    <td>{{ $pengguna['npm'] }}</td>
                                     <td>{{ $pengguna['email'] }}</td>
                                     <td>{{ $pengguna['rata_rata_nilai'] }}</td>
                                     <td>{{ $pengguna['created_at'] }}</td>

@@ -25,7 +25,7 @@ class Kelas extends Model
 
     public function mahasiswas()
     {
-        return $this->belongsToMany(User::class, 'kelas_mahasiswa', 'kelas_id', 'mahasiswa_id');
+        return $this->belongsToMany(User::class, 'kelas_mahasiswa', 'kelas_id', 'mahasiswa_id')->orderBy('npm', 'asc');
     }
 
     // Relasi ke tugas

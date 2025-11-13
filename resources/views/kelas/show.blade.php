@@ -23,6 +23,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
+                                    <th>NPM</th>
                                     <th>Email</th>
                                 </tr>
                             </thead>
@@ -31,6 +32,7 @@
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ $mhs->name }}</td>
+                                        <td>{{ $mhs->npm ?: '-' }}</td>
                                         <td>{{ $mhs->email }}</td>
                                     </tr>
                                 @empty
